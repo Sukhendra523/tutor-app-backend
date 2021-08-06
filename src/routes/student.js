@@ -1,4 +1,5 @@
 const express = require("express");
+const { requireSignin, isStudent } = require("../common-middleware");
 
 const {
   registerStudent,
@@ -9,8 +10,11 @@ const {
 
 const router = express.Router();
 
-router.post("/registerStudent", registerStudent);
+router.use("/", requireSignin);
+
+router.post("/registerStudent", isStudent, registerStudent);
 router.get("/getAllStudent", getAllStudent);
-router.post("/sendRequest", sendRequest);
+router.post("/sendRequest", isStudent, sendRequest);
 router.get("/getStudent/:userId", getStudent);
+
 module.exports = router;

@@ -1,4 +1,5 @@
 const express = require("express");
+const { requireSignin, isTutor } = require("../common-middleware");
 
 const {
   registerTutor,
@@ -10,10 +11,12 @@ const {
 
 const router = express.Router();
 
-router.post("/registerTutor", registerTutor);
 router.get("/getAllTutor", getAllTutor);
-router.post("/acceptRequest", acceptStudentRequest);
-router.post("/deleteRequest", deleteRequest);
+router.use("/", requireSignin);
+
+router.post("/registerTutor", isTutor, registerTutor);
+router.post("/acceptRequest", isTutor, acceptStudentRequest);
+router.post("/deleteRequest", isTutor, deleteRequest);
 router.get("/getTutor/:userId", getTutor);
 
 module.exports = router;
