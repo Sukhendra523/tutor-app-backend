@@ -15,18 +15,18 @@ exports.sendOTP = async (req, res) => {
   console.log("Mobile :::", mobile);
 
   try {
-    // const response = await client.verify
-    //   .services(process.env.TWILIO_SERVICE_ID)
-    //   .verifications.create({
-    //     to: `+${mobile}`,
-    //     channel: "sms",
-    //   });
-    // response &&
-    res.status(200).json({
-      status: 200,
-      success: true,
-      message: "verifaction Code has sent to your mobile number",
-    });
+    const response = await client.verify
+      .services(process.env.TWILIO_SERVICE_ID)
+      .verifications.create({
+        to: `+${mobile}`,
+        channel: "sms",
+      });
+    response &&
+      res.status(200).json({
+        status: 200,
+        success: true,
+        message: "verifaction Code has sent to your mobile number",
+      });
   } catch (error) {
     res.status(400).json({
       error: error,
@@ -39,14 +39,13 @@ exports.verifyOTP = async (req, res, next) => {
   const { mobile, code } = req.body;
 
   try {
-    // const response = await client.verify
-    //   .services(process.env.TWILIO_SERVICE_ID)
-    //   .verificationChecks.create({
-    //     to: `+${mobile}`,
-    //     code: code,
-    //   });
-    // response && response.status == "approved"
-    true
+    const response = await client.verify
+      .services(process.env.TWILIO_SERVICE_ID)
+      .verificationChecks.create({
+        to: `+${mobile}`,
+        code: code,
+      });
+    response && response.status == "approved"
       ? next()
       : res.status(403).json({ message: "Incorrect OTP Please Try again" });
   } catch (error) {
