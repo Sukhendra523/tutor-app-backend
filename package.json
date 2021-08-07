@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.server.js",
   "scripts": {
-    "start": "nodemon src/index.server.js",
+    "start": "node src/index.server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Sukhendra Rajawat",

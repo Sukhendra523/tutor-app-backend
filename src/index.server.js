@@ -20,12 +20,15 @@ const app = express();
 // Local DB connection string >> mongodb://localhost:27017/${process.env.MONGO_DB_DATABASE}
 //Cloud DB connection string >> mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.eaa66.mongodb.net/${process.env.MONGO_DB_DATABASE}?retryWrites=true&w=majority
 mongoose
-  .connect(`mongodb://localhost:27017/${process.env.MONGO_DB_DATABASE}`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
+  .connect(
+    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.eaa66.mongodb.net/${process.env.MONGO_DB_DATABASE}?retryWrites=true&w=majority`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    }
+  )
   .then(() => {
     console.log("Database Connected");
   })
@@ -42,6 +45,6 @@ app.use("/api", authRoutes);
 app.use("/api", studentRoutes);
 app.use("/api", tutorRoutes);
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 2000, () => {
   console.log(`SERVER is running at PORT = ${process.env.PORT}`);
 });

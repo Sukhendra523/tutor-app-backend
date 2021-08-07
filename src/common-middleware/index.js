@@ -33,14 +33,14 @@ exports.isMobileAuthenticated = (req, res, next) => {
 };
 
 exports.isStudent = (req, res, next) => {
-  if (req.user.role == "student") {
+  if (req.user.role !== "student") {
     return res.status(400).json({ message: "Student Acces denied" });
   }
   next();
 };
 
 exports.isTutor = (req, res, next) => {
-  if (req.user.role !== "teacher") {
+  if (req.user.role !== "tutor") {
     return res.status(400).json({ message: "Teacher Acces denied" });
   }
   next();

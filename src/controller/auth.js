@@ -18,7 +18,7 @@ exports.sendOTP = async (req, res) => {
     const response = await client.verify
       .services(process.env.TWILIO_SERVICE_ID)
       .verifications.create({
-        to: `+${mobile}`,
+        to: `+91${mobile}`,
         channel: "sms",
       });
     response &&
@@ -42,7 +42,7 @@ exports.verifyOTP = async (req, res, next) => {
     const response = await client.verify
       .services(process.env.TWILIO_SERVICE_ID)
       .verificationChecks.create({
-        to: `+${mobile}`,
+        to: `+91${mobile}`,
         code: code,
       });
     response && response.status == "approved"
@@ -75,10 +75,10 @@ exports.signin = async (req, res) => {
       });
     } else {
       const mobileAuthToken = jwt.sign(
-        mobile,
+        { mobile: mobile },
         process.env.MOBILE_AUTH_SECRET_KEY,
         {
-          expiresIn: "1h",
+          expiresIn: "20m",
         }
       );
       res.status(200).json({
@@ -134,7 +134,7 @@ exports.registerUser = async (req, res) => {
 
     const token = jwt.sign(
       { mobile: user.mobile, _id: user._id, role: user.role },
-      process.env.SECRET_KEY,
+      process.env.LOGIN_SECRET_KEY,
       { expiresIn: "1d" }
     );
     if (user) {
