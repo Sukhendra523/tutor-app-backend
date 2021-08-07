@@ -16,7 +16,7 @@ const app = express();
 // allow cross communication
 app.use(
   cors({
-    origin: "*",
+    origin: "https://tutor-app-frontend.herokuapp.com/",
   })
 );
 
