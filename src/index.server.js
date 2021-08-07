@@ -1,8 +1,7 @@
 const express = require("express");
 const env = require("dotenv");
 const mongoose = require("mongoose");
-// const cors = require("cors");
-const { createProxyMiddleware } = require("http-proxy-middleware");
+const cors = require("cors");
 
 //Environment Variable
 env.config();
@@ -14,7 +13,11 @@ const tutorRoutes = require("./routes/tutor");
 
 //using express application
 const app = express();
-// allow cross communication
+
+// We need CORS for HTTP requests to work across servers.
+app.use(cors());
+
+// 1st Way : using Cors
 // app.use(
 //   cors({
 //     origin: "https://tutor-app-frontend.herokuapp.com",
@@ -22,6 +25,7 @@ const app = express();
 //   })
 // );
 
+// 2nd Way : setting Access-Control-Allow-Origin in headers
 // app.use(function (req, res, next) {
 //   //Enabling CORS
 //   res.header("Access-Control-Allow-Origin", "*");
@@ -59,30 +63,9 @@ mongoose
 app.use(express.json());
 
 //rest api routes
-app.use(
-  "/api",
-  createProxyMiddleware({
-    target: "https://backend-tutor-app.herokuapp.com",
-    changeOrigin: true,
-  }),
-  authRoutes
-);
-app.use(
-  "/api",
-  createProxyMiddleware({
-    target: "https://backend-tutor-app.herokuapp.com",
-    changeOrigin: true,
-  }),
-  studentRoutes
-);
-app.use(
-  "/api",
-  createProxyMiddleware({
-    target: "https://backend-tutor-app.herokuapp.com",
-    changeOrigin: true,
-  }),
-  tutorRoutes
-);
+app.use("/api", authRoutes);
+app.use("/api", studentRoutes);
+app.use("/api", tutorRoutes);
 
 app.listen(process.env.PORT || 2000, () => {
   console.log(`SERVER is running at PORT = ${process.env.PORT}`);
