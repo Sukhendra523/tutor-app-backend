@@ -14,7 +14,11 @@ const tutorRoutes = require("./routes/tutor");
 //using express application
 const app = express();
 // allow cross communication
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 //DB Connection
 
