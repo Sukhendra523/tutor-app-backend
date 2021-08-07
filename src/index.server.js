@@ -1,7 +1,7 @@
 const express = require("express");
 const env = require("dotenv");
 const mongoose = require("mongoose");
-const cors = require("cors");
+// const cors = require("cors");
 
 //Environment Variable
 env.config();
@@ -14,11 +14,23 @@ const tutorRoutes = require("./routes/tutor");
 //using express application
 const app = express();
 // allow cross communication
-app.use(
-  cors({
-    origin: "https://tutor-app-frontend.herokuapp.com/",
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://tutor-app-frontend.herokuapp.com",
+//     optionsSuccessStatus: 200,
+//   })
+// );
+
+app.use(function (req, res, next) {
+  //Enabling CORS
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
+  );
+  next();
+});
 
 //DB Connection
 
