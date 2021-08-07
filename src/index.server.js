@@ -2,6 +2,7 @@ const express = require("express");
 const env = require("dotenv");
 const mongoose = require("mongoose");
 // const cors = require("cors");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 //Environment Variable
 env.config();
@@ -21,19 +22,16 @@ const app = express();
 //   })
 // );
 
-app.use(function (req, res, next) {
-  //Enabling CORS
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://backend-tutor-app.herokuapp.com"
-  );
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
-  );
-  next();
-});
+// app.use(function (req, res, next) {
+//   //Enabling CORS
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
+//   );
+//   next();
+// });
 
 //DB Connection
 
@@ -61,9 +59,30 @@ mongoose
 app.use(express.json());
 
 //rest api routes
-app.use("/api", authRoutes);
-app.use("/api", studentRoutes);
-app.use("/api", tutorRoutes);
+app.use(
+  "/api",
+  createProxyMiddleware({
+    target: "https://backend-tutor-app.herokuapp.com",
+    changeOrigin: true,
+  }),
+  authRoutes
+);
+app.use(
+  "/api",
+  createProxyMiddleware({
+    target: "https://backend-tutor-app.herokuapp.com",
+    changeOrigin: true,
+  }),
+  studentRoutes
+);
+app.use(
+  "/api",
+  createProxyMiddleware({
+    target: "https://backend-tutor-app.herokuapp.com",
+    changeOrigin: true,
+  }),
+  tutorRoutes
+);
 
 app.listen(process.env.PORT || 2000, () => {
   console.log(`SERVER is running at PORT = ${process.env.PORT}`);
