@@ -4,8 +4,8 @@ const Class = require("../models/class");
 const Board = require("../models/board");
 const Stream = require("../models/stream");
 const Subject = require("../models/subject");
-const env = require("dotenv").config();
-
+const env = require("dotenv");
+env.config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
