@@ -1,7 +1,7 @@
 const express = require("express");
 const env = require("dotenv");
 const mongoose = require("mongoose");
-// const cors = require("cors");
+const cors = require("cors");
 
 //Environment Variable
 env.config();
@@ -15,7 +15,7 @@ const tutorRoutes = require("./routes/tutor");
 const app = express();
 
 // We need CORS for HTTP requests to work across servers.
-// app.use(cors());
+app.use(cors());
 
 // 1st Way : using Cors
 // app.use(
@@ -26,19 +26,16 @@ const app = express();
 // );
 
 // 2nd Way : setting Access-Control-Allow-Origin in headers
-app.use(function (req, res, next) {
-  //Enabling CORS
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET,HEAD,OPTIONS,POST,PUT,PATCH,DELETE"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
-  );
-  next();
-});
+// app.use(function (req, res, next) {
+//   //Enabling CORS
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
+//   );
+//   next();
+// });
 
 //DB Connection
 
